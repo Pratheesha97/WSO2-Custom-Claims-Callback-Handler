@@ -1,5 +1,7 @@
 package org.wso2.carbon.identity.handler;
 
+import com.etisalat.credential.encryption.module.EtisalatEncryptor;
+import com.etisalat.credential.encryption.module.exception.EtisalatEncryptionException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,6 +10,9 @@ import org.wso2.carbon.identity.oauth2.authz.OAuthAuthzReqMessageContext;
 import org.wso2.carbon.identity.oauth2.token.OAuthTokenReqMessageContext;
 import org.wso2.carbon.identity.openidconnect.CustomClaimsCallbackHandler;
 import org.wso2.carbon.identity.openidconnect.DefaultOIDCClaimsCallbackHandler;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,16 +30,26 @@ public class IDTokenCustomClaims extends DefaultOIDCClaimsCallbackHandler implem
         }
 
         JWTClaimsSet jwtClaimsSet = super.handleCustomClaims(builder, request);
-
         Map<String, Object> claims = jwtClaimsSet.getClaims();
 
-        for (Map.Entry<String, Object> claimEntry: claims.entrySet()) {
-            String claimValue = claimEntry.getValue().toString();
-            builder.claim(claimEntry.getKey(), claimValue);
+        List<String> exemptClaimKeys = Arrays.asList("iss", "sub", "azp", "iat", "jti", "nbf", "client_id", "scope", "aut", "exp", "aud");
+
+        for (Map.Entry<String, Object> claimEntry : claims.entrySet()) {
+            if (!exemptClaimKeys.contains(claimEntry.getKey())) {
+                String claimValue = claimEntry.getValue().toString();
+                EtisalatEncryptor etisalatEncryptor = new EtisalatEncryptor();
+                try {
+                    String encryptedClaimValue = etisalatEncryptor.generateEncryptedCredential(claimValue);
+                    builder.claim(claimEntry.getKey(), encryptedClaimValue);
+                } catch (EtisalatEncryptionException e) {
+                    throw new IdentityOAuth2Exception("Error while encrypting claim values", e);
+                }
+            }
         }
 
         return builder.build();
     }
+
 
     @Override
     public JWTClaimsSet handleCustomClaims(JWTClaimsSet.Builder builder, OAuthAuthzReqMessageContext request) throws IdentityOAuth2Exception {
@@ -44,12 +59,21 @@ public class IDTokenCustomClaims extends DefaultOIDCClaimsCallbackHandler implem
         }
 
         JWTClaimsSet jwtClaimsSet = super.handleCustomClaims(builder, request);
-
         Map<String, Object> claims = jwtClaimsSet.getClaims();
 
-        for (Map.Entry<String, Object> claimEntry: claims.entrySet()) {
-            String claimValue = claimEntry.getValue().toString();
-            builder.claim(claimEntry.getKey(), claimValue);
+        List<String> exemptClaimKeys = Arrays.asList("iss", "sub", "azp", "iat", "jti", "nbf", "client_id", "scope", "aut", "exp", "aud");
+
+        for (Map.Entry<String, Object> claimEntry : claims.entrySet()) {
+            if (!exemptClaimKeys.contains(claimEntry.getKey())) {
+                String claimValue = claimEntry.getValue().toString();
+                EtisalatEncryptor etisalatEncryptor = new EtisalatEncryptor();
+                try {
+                    String encryptedClaimValue = etisalatEncryptor.generateEncryptedCredential(claimValue);
+                    builder.claim(claimEntry.getKey(), encryptedClaimValue);
+                } catch (EtisalatEncryptionException e) {
+                    throw new IdentityOAuth2Exception("Error while encrypting claim values", e);
+                }
+            }
         }
 
         return builder.build();
