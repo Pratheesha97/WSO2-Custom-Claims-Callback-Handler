@@ -1,7 +1,5 @@
 package org.wso2.carbon.identity.handler;
 
-import com.etisalat.credential.encryption.module.EtisalatEncryptor;
-import com.etisalat.credential.encryption.module.exception.EtisalatEncryptionException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,13 +35,9 @@ public class IDTokenCustomClaims extends DefaultOIDCClaimsCallbackHandler implem
         for (Map.Entry<String, Object> claimEntry : claims.entrySet()) {
             if (!exemptClaimKeys.contains(claimEntry.getKey())) {
                 String claimValue = claimEntry.getValue().toString();
-                EtisalatEncryptor etisalatEncryptor = new EtisalatEncryptor();
-                try {
-                    String encryptedClaimValue = etisalatEncryptor.generateEncryptedCredential(claimValue);
+
+                    String encryptedClaimValue = "abc";
                     builder.claim(claimEntry.getKey(), encryptedClaimValue);
-                } catch (EtisalatEncryptionException e) {
-                    throw new IdentityOAuth2Exception("Error while encrypting claim values", e);
-                }
             }
         }
 
@@ -66,13 +60,8 @@ public class IDTokenCustomClaims extends DefaultOIDCClaimsCallbackHandler implem
         for (Map.Entry<String, Object> claimEntry : claims.entrySet()) {
             if (!exemptClaimKeys.contains(claimEntry.getKey())) {
                 String claimValue = claimEntry.getValue().toString();
-                EtisalatEncryptor etisalatEncryptor = new EtisalatEncryptor();
-                try {
-                    String encryptedClaimValue = etisalatEncryptor.generateEncryptedCredential(claimValue);
+                    String encryptedClaimValue = "abc";
                     builder.claim(claimEntry.getKey(), encryptedClaimValue);
-                } catch (EtisalatEncryptionException e) {
-                    throw new IdentityOAuth2Exception("Error while encrypting claim values", e);
-                }
             }
         }
 

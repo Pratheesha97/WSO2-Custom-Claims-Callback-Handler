@@ -1,6 +1,5 @@
 package org.wso2.carbon.identity.handler.internal;
 
-import com.etisalat.credential.encryption.module.EtisalatEncryptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleContext;
@@ -28,30 +27,5 @@ public class IDTokenCustomClaimsServiceComponent {
             log.error("Error while activating id-token-custom-claims.", e);
         }
     }
-
-    @Reference(
-            name = "com.etisalat.credential.encryption.client.manager.component",
-            service = EtisalatEncryptor.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetEncryptionService")
-    protected void setEncryptionService(EtisalatEncryptor encryptionService) {
-
-        IDTokenCustomClaimsDataHolder.getInstance().setEncryptionService(encryptionService);
-
-        if (log.isDebugEnabled()) {
-            log.debug("Setting the Encryption Service.");
-        }
-    }
-
-    protected void unsetEncryptionService(EtisalatEncryptor encryptionService) {
-
-        IDTokenCustomClaimsDataHolder.getInstance().setEncryptionService(null);
-
-        if (log.isDebugEnabled()) {
-            log.debug("Unset the Encryption Service.");
-        }
-    }
-
 
 }
