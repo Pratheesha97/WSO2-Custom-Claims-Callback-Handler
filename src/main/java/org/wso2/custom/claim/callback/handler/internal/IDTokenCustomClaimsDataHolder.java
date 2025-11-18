@@ -1,4 +1,4 @@
-package org.wso2.carbon.identity.handler.internal;
+package org.wso2.custom.claim.callback.handler.internal;
 
 
 /**

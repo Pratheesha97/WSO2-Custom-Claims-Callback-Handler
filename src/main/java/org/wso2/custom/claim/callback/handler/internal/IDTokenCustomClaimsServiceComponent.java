@@ -1,11 +1,11 @@
-package org.wso2.carbon.identity.handler.internal;
+package org.wso2.custom.claim.callback.handler.internal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.*;
 import org.osgi.service.component.ComponentContext;
-import org.wso2.carbon.identity.handler.IDTokenCustomClaims;
+import org.wso2.custom.claim.callback.handler.IDTokenCustomClaims;
 
 @Component(
         name = "identity.handler",

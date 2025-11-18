@@ -1,103 +1,147 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.wso2</groupId>
-        <artifactId>wso2</artifactId>
-        <version>5.1</version>
-    </parent>
-
-    <artifactId>org.wso2.custom.handler</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>org.wso2.custom.claim.callback.handler</groupId>
+    <artifactId>org.wso2.custom.claim.callback.handler</artifactId>
+    <version>1.0.0</version>
     <packaging>bundle</packaging>
+
+    <!-- Project Information -->
+    <name>OAuth2 Custom Claims Callback Handler</name>
+    <description>OAuth2 Custom Claims Callback Handler for WSO2 Identity Server</description>
+
+    <properties>
+        <!-- Maven -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Carbon Kernel -->
+        <carbon.kernel.version>4.10.9</carbon.kernel.version>
+        <carbon.kernel.version.range>[4.10.9, 4.11.0)</carbon.kernel.version.range>
+
+        <!--Carbon Identity Framework Version-->
+        <carbon.identity.framework.version>7.0.78</carbon.identity.framework.version>
+        <carbon.identity.framework.version.range>[5.14.67, 8.0.0)</carbon.identity.framework.version.range>
+
+        <!-- Identity Inbound OAuth Version   -->
+        <carbon.identity.oauth.version>7.0.26</carbon.identity.oauth.version>
+        <identity.inbound.auth.openid.version>5.10.2</identity.inbound.auth.openid.version>
+        <carbon.identity.oauth.version.range>[7.0.26,8.0.0)</carbon.identity.oauth.version.range>
+
+        <!-- Other -->
+        <apache.felix.scr.ds.annotations.version>1.2.10</apache.felix.scr.ds.annotations.version>
+        <commons-logging.version>1.2</commons-logging.version>
+        <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
+
+        <osgi.framework.version.range>[1.7.0, 2.0.0)</osgi.framework.version.range>
+        <osgi.service.component.version.range>[1.2.0, 2.0.0)</osgi.service.component.version.range>
+        <commons-logging.osgi.version.range>[1.2,2.0)</commons-logging.osgi.version.range>
+    </properties>
 
     <dependencies>
         <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>${commons-logging.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.application.authentication.framework</artifactId>
+            <version>${carbon.identity.framework.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
             <artifactId>org.wso2.carbon.identity.oauth</artifactId>
-            <version>6.11.21</version>
+            <version>${carbon.identity.oauth.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
-            <version>1.2.10</version>
+            <version>${apache.felix.scr.ds.annotations.version}</version>
         </dependency>
     </dependencies>
 
-    <properties>
-        <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
-    </properties>
+    <!-- Repositories -->
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>https://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2.releases</id>
+            <name>WSO2 internal Repository</name>
+            <url>https://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>https://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2-maven2-repository</id>
+            <url>https://dist.wso2.org/maven2</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>wso2-maven2-repository</id>
+            <url>https://dist.wso2.org/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-scr-plugin</artifactId>
+                <version>1.26.4</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
+                <version>3.2.0</version>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Private-Package>org.wso2.carbon.identity.handler.internal</Private-Package>
-                        <Export-Package>!org.wso2.carbon.identity.handler.internal,
-                            org.wso2.carbon.identity.handler.*;
-                            version="${project.version}"
+                        <Private-Package>org.wso2.custom.claim.callback.handler.internal</Private-Package>
+                        <Export-Package>
+                            !org.wso2.custom.claim.callback.handler.internal,
+                            org.wso2.custom.claim.callback.handler.*; version="${project.version}"
                         </Export-Package>
                         <Import-Package>
-                            org.apache.commons.logging; version="[1.2.0,2.0.0)",
-                            org.osgi.framework; version="[1.7.0, 2.0.0)",
-                            org.osgi.service.component;version="[1.2.0,2.0.0)",
-                            org.wso2.carbon.identity.oauth2.*; version="[6.0.0, 7.0.0)",
-                            org.wso2.carbon.identity.openidconnect.*;version="[6.0.0, 7.0.0)",
-                            com.nimbusds.jwt.*;version="[7.0.0, 8.0.0)"
+                            org.osgi.framework; version="${osgi.framework.version.range}",
+                            org.osgi.service.component; version="${osgi.service.component.version.range}",
+                            org.apache.commons.logging; version="${commons-logging.osgi.version.range}",
+                            org.wso2.carbon.identity.oauth.*; version="${carbon.identity.oauth.version.range}",
+                            org.wso2.carbon.identity.oauth2.*; version="${carbon.identity.oauth.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.*; version="${carbon.identity.framework.version.range}"
                         </Import-Package>
-                        <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>${maven.findbugs.plugin.version}</version>
-                <configuration>
-                    <effort>Max</effort>
-                    <threshold>Low</threshold>
-                    <xmlOutput>true</xmlOutput>
-                    <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
-                    <!--Exclude sources -->
-<!--                    <excludeFilterFile>${maven.findbugsplugin.exclude.file}-->
-<!--                    </excludeFilterFile>-->
-                    <plugins>
-                        <plugin>
-                            <groupId>com.h3xstream.findsecbugs</groupId>
-                            <artifactId>findsecbugs-plugin</artifactId>
-                            <version>LATEST</version>
-                            <!-- Auto-update to the latest stable -->
-                        </plugin>
-                    </plugins>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>analyze-compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
