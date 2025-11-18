@@ -12,6 +12,16 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="wso2-maven2-repository" />
+      <option name="name" value="wso2-maven2-repository" />
+      <option name="url" value="https://dist.wso2.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="wso2.snapshots" />
+      <option name="name" value="Apache Snapshot Repository" />
+      <option name="url" value="https://maven.wso2.org/nexus/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="wso2.snapshots" />
       <option name="name" value="WSO2 Snapshot Repository" />
       <option name="url" value="https://maven.wso2.org/nexus/content/repositories/snapshots/" />
@@ -25,6 +35,11 @@
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="wso2.releases" />
+      <option name="name" value="WSO2 internal Repository" />
+      <option name="url" value="https://maven.wso2.org/nexus/content/repositories/releases/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="wso2.releases" />

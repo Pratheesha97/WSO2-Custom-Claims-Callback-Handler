@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This IDTokenCustomClaims handler is responsible for appending custom claims to the self contained access token.
+ * This ClaimsCallbackHandler handler is responsible for appending custom claims to the self contained access token.
  */
-public class IDTokenCustomClaims extends DefaultOIDCClaimsCallbackHandler implements CustomClaimsCallbackHandler {
+public class ClaimsCallbackHandler extends DefaultOIDCClaimsCallbackHandler implements CustomClaimsCallbackHandler {
 
-    private static final Log log = LogFactory.getLog(IDTokenCustomClaims.class);
+    private static final Log log = LogFactory.getLog(ClaimsCallbackHandler.class);
 
     @Override
     public JWTClaimsSet handleCustomClaims(JWTClaimsSet.Builder builder, OAuthTokenReqMessageContext request) throws IdentityOAuth2Exception {
