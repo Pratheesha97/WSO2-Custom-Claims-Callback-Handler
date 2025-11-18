@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This ClaimsCallbackHandler handler is responsible for appending custom claims to the self contained access token.
+ * This ClaimsCallbackHandler handler is responsible for appending custom claims to the self contained access token and ID token.
  */
 public class ClaimsCallbackHandler extends DefaultOIDCClaimsCallbackHandler implements CustomClaimsCallbackHandler {
 
